@@ -3,10 +3,10 @@ package com.ilegra.sales.processor.line;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.ilegra.sales.entity.EntityType;
 import com.ilegra.sales.entity.Salesman;
+import com.ilegra.util.RegexUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 public class SalesmanLineProcessor implements LineProcessor<Salesman> {
 	
 	private static final String REGEX = "(001.)(\\d{13}.)(\\w*.)(\\d+\\.?\\d{2})";
-	
 	
 	private List<Salesman> sallers;
 	
@@ -26,8 +25,7 @@ public class SalesmanLineProcessor implements LineProcessor<Salesman> {
 	
 	private void identifySallers(String line) {
 		sallers = new ArrayList<>();
-		Pattern pattern = Pattern.compile(REGEX);
-		Matcher matcher = pattern.matcher(line);
+		Matcher matcher = RegexUtil.createMatcher(line, REGEX);
 		while (matcher.find()) {
 		    String registry =  matcher.group(0);
 		    log.debug("Salesman found: {}", registry);
@@ -36,8 +34,5 @@ public class SalesmanLineProcessor implements LineProcessor<Salesman> {
 	}
 
 	@Override
-	public EntityType geEntityType() {
-		return EntityType.SALESMAN;
-	}
-
+	public EntityType geEntityType() {return EntityType.SALESMAN;}
 }

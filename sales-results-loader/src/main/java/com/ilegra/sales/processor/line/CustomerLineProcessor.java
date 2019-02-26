@@ -3,10 +3,10 @@ package com.ilegra.sales.processor.line;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.ilegra.sales.entity.Customer;
 import com.ilegra.sales.entity.EntityType;
+import com.ilegra.util.RegexUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,12 +21,10 @@ public class CustomerLineProcessor implements LineProcessor<Customer> {
 		identify(line);
 		return customers;
 	}
-
 	
 	private void identify(String line) {
 		customers = new ArrayList<>();
-		Pattern pattern = Pattern.compile(REGEX);
-		Matcher matcher = pattern.matcher(line);
+		Matcher matcher = RegexUtil.createMatcher(line, REGEX);
 		while (matcher.find()) {
 		    String registry =  matcher.group(0);
 		    log.debug("Customer found: {}", registry);
@@ -35,8 +33,6 @@ public class CustomerLineProcessor implements LineProcessor<Customer> {
 	}
 
 	@Override
-	public EntityType geEntityType() {
-		return EntityType.CUSTOMER;
-	}
+	public EntityType geEntityType() {return EntityType.CUSTOMER;}
 
 }

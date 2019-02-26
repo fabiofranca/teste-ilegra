@@ -3,10 +3,10 @@ package com.ilegra.sales.processor.line;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.ilegra.sales.entity.EntityType;
 import com.ilegra.sales.entity.Sale;
+import com.ilegra.util.RegexUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,6 +16,7 @@ public class SaleLineProcessor implements LineProcessor<Sale> {
 	private static final String REGEX = "(003.)(\\d{2}.)(\\[.*?\\]).(\\w+)";
 	
 	private List<Sale> sales;
+	
 	@Override
 	public List<Sale> processLine(String line) {
 		identifySales(line);
@@ -24,8 +25,7 @@ public class SaleLineProcessor implements LineProcessor<Sale> {
 	
 	private void identifySales(String line) {
 		sales = new ArrayList<>();
-		Pattern pattern = Pattern.compile(REGEX);
-		Matcher matcher = pattern.matcher(line);
+		Matcher matcher = RegexUtil.createMatcher(line, REGEX);
 		while (matcher.find()) {
 		    String registry =  matcher.group(0);
 		    log.debug("Sale found: {}", registry);
@@ -34,8 +34,6 @@ public class SaleLineProcessor implements LineProcessor<Sale> {
 	}
 
 	@Override
-	public EntityType geEntityType() {
-		return EntityType.SALE;
-	}
+	public EntityType geEntityType() {return EntityType.SALE;}
 
 }
