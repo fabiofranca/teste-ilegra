@@ -16,7 +16,7 @@ import com.ilegra.sales.entity.Entity;
 import com.ilegra.sales.entity.EntityType;
 import com.ilegra.sales.load.SalesFileLoader;
 import com.ilegra.sales.processor.line.LineProcessor;
-import com.ilegra.utils.FileUtil;
+import com.ilegra.util.FileUtil;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +24,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SalesFileProcessor implements Processor {
 	
-	@Getter 
-	private List<LineProcessor<Entity>> lineProcessors;
 	private List<File> filesToProcess;
 	private SalesFileLoader loader;
+
+	@Getter 
+	private List<LineProcessor<Entity>> lineProcessors;
 	
 	@Getter 
 	private HashMap<EntityType, List<Entity>> registries;
@@ -47,12 +48,15 @@ public class SalesFileProcessor implements Processor {
 	public void process() throws Exception {
 		if(lineProcessors.size() == 0) throw new Exception("No registered processors, please use regitryProcessor()");
 		filesToProcess = loader.loadAllFiles();
-		filesToProcess.forEach(file -> {
+		
+		for (File file : filesToProcess) {
 			processFile(file);
-		});
+			FileUtil.deleteQuietly(file);
+		}
 	}
 
 	private void processFile(File file) {
+		log.debug("processing file {}", file.getName());
 		try {
 			LineIterator lines = FileUtil.lineIterator(file);
 			while(hasLines(lines)) identifyEntitiesInLine(lines.nextLine());

@@ -10,8 +10,6 @@ import org.junit.Test;
 
 import com.ilegra.configurations.CommonConfigurationsImpl;
 import com.ilegra.sales.entity.Salesman;
-import com.ilegra.sales.processor.line.LineProcessor;
-import com.ilegra.sales.processor.line.SalesmanLineProcessor;
 
 public class SalesmanLineProcessorTest {
 	

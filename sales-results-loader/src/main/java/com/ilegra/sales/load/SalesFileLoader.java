@@ -12,7 +12,7 @@ import java.util.List;
 
 import com.ilegra.configurations.Configurations;
 import com.ilegra.loader.FileLoader;
-import com.ilegra.utils.FileUtil;
+import com.ilegra.util.FileUtil;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,7 +40,7 @@ public class SalesFileLoader implements FileLoader{
 		return inputFiles;
 	}
 
-	private Path loadFolder(String folderName) throws URISyntaxException {
+	public Path loadFolder(String folderName) throws URISyntaxException {
 		URL folderPath = ClassLoader.getSystemResource(folderName);
 		Path rootFolder = Paths.get(folderPath.toURI());
 		return rootFolder;

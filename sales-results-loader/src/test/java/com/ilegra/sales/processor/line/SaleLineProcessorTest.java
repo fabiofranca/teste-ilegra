@@ -25,7 +25,6 @@ public class SaleLineProcessorTest {
 		registry(new CommonConfigurationsImpl());
 	}
 	
-
 	@Before
 	public void load() {
 		lineProcessor = new SaleLineProcessor();
